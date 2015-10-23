@@ -13,7 +13,9 @@ function ProcessRepo (url) {
   this.clonePath = `${__dirname}/_temp_repo`;
 }
 
-
+/**!
+ * Start the process. Requires `this.repoUrl` & `this.clonePath` to be set
+ */
 ProcessRepo.prototype.run = function () {
   const ingestPath = this.clonePath;
 
@@ -28,7 +30,7 @@ ProcessRepo.prototype.run = function () {
 
 
 /**!
- * Clone the given repo
+ * Clone the repo given to the constructor on init
  */
 ProcessRepo.prototype.clone = function () {
   var self = this;
@@ -44,8 +46,8 @@ ProcessRepo.prototype.clone = function () {
 
 
 /**!
- * Cleans the working directory of any old repo directories hanging around,
- * should always be run as a safety mechanism before cloning.
+ * Cleans the working directory of any old repo clones hanging around. Should
+ * always be run as a safety mechanism before cloning.
  */
 ProcessRepo.prototype.clean = function () {
   const clonePath = this.clonePath;

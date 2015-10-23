@@ -1,3 +1,6 @@
+var frontmatter = require('front-matter');
+var moment = require('moment');
+var markdown = require('markdown').markdown;
 var titleCase = require('to-title-case');
 var _ = require('lodash');
 
@@ -10,11 +13,32 @@ var _ = require('lodash');
  */
 function markdownParser (filename, filebody) {
   var proto = markdownParser.prototype;
-  console.log( proto.filenameExtract(filename) );
+  var filenameJson =  proto.filenameExtract(filename);
+  var bodyJson = proto.parseBody(filebody);
+  bodyJson.meta = filenameJson;
+  return bodyJson;
 }
 
 
+// This is the pattern that the parser uses to validate and parse a filename
+// ✔︎ "how-to-debug-javascript-2015-10-12"
+// ✘ "a_random-post-filename"
 markdownParser.prototype.filenameRegex = /(.*)-(\d{4}-\d{1,2}-\d{1,2})$/;
+
+
+/**!
+ * For taking the raw body and parsing frontmatter and markdown, then returning
+ * a complete body object
+ * @param {String} filebody - Raw source of a file
+ * @returns {Object}
+ */
+markdownParser.prototype.parseBody = function (filebody) {
+  var parsed = frontmatter(filebody);
+  var bodyHtml = markdown.toHTML(parsed.body);
+  return _.assign(parsed.attributes, {
+    body: bodyHtml
+  });
+};
 
 
 /**!
@@ -49,7 +73,7 @@ markdownParser.prototype.filenameExtract = function (filename) {
   var date, slug, title;
 
   if (! proto.test(filename)) {
-    console.log(`Cant parse ${filename}`);
+    console.warn(`Cant parse ${filename}`);
     return false;
   }
 
