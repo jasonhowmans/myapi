@@ -9,7 +9,7 @@ function (req, res) {
 
   // Clone the repo then run the ingestor to read posts from github into
   // persisted JSON
-  var process = new ProcessRepo('git@github.com:jasonhowmans/writing.git');
+  var process = new ProcessRepo('https://github.com/jasonhowmans/writing.git');
   process.run();
 
   res.writeHead(200);
