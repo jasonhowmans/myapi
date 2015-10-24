@@ -1,3 +1,4 @@
+'use strict';
 var restify = require('restify');
 
 const listenPort = 8000;
@@ -13,7 +14,7 @@ var routes = [
     handler: require('./routes/posts')
   },
   {
-    path: '/post',
+    path: '/posts/:slug',
     handler: require('./routes/post')
   }
 ];

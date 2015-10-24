@@ -1,3 +1,4 @@
+'use strict';
 var _ = require('lodash');
 var path = require('path');
 var fs = require('fs');
@@ -10,6 +11,10 @@ function IngestMd (ingestDir) {
     return;
   }
   this.ingestDir = ingestDir;
+
+  storage.initSync({
+    dir: '../../persist'
+  });
 }
 
 
@@ -17,7 +22,7 @@ function IngestMd (ingestDir) {
  * After the Ingestor has been configured, use `run` to set things going
  */
 IngestMd.prototype.run = function () {
-  this.crawlDir( this.persistentInserter );
+  this.crawlDir( this.persistInserter );
 };
 
 
@@ -36,7 +41,6 @@ IngestMd.prototype.parseFile = function (filename) {
       if (err) {
         reject(err);
       }
-      console.log(`${body.length}bytes loaded`);
       resolve( markdownParser.parse(filename, body) );
     });
   });
@@ -48,15 +52,12 @@ IngestMd.prototype.parseFile = function (filename) {
  * @param {String} key - The key that the data should be stored under
  * @param {*} data - The data to be inserted into redis. Can be anything UTF-8 friendly
  */
-IngestMd.prototype.persistentInserter = function (key, data) {
+IngestMd.prototype.persistInserter = function (key, data) {
   if (! _.isObject(data)) {
+    console.warn('`data` argument should be Object');
     return;
   }
-
-  storage.initSync();
-  console.log(key);
   storage.setItem(key, data);
-  console.log(storage.values());
 };
 
 
@@ -74,15 +75,17 @@ IngestMd.prototype.crawlDir = function (inserterMethod) {
 
     var files = _.filter(dir, markdownParser.test);
 
-    var index = 1;
     files.forEach(function (filename) {
       self.parseFile( filename ).then(
       function (fileJson) {
         if (_.isFunction(inserterMethod)) {
-         inserterMethod(`post:${index ++}`, fileJson);
+          let slug = fileJson.meta.slug;
+          inserterMethod(`post:${slug}`, fileJson);
         }
       }, console.error);
     });
+
+    console.log('Ingest complete');
   });
 };
 

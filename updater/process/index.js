@@ -1,3 +1,4 @@
+'use strict';
 var _ = require('lodash');
 var rimraf = require('rimraf');
 var git = require('gift');
@@ -23,10 +24,13 @@ ProcessRepo.prototype.run = function () {
   console.log('cleaning dir and cloning repo...');
   this.clone().then(
   function (err, repo) {
+    if (err) {
+      return console.error(err);
+    }
     console.log('starting ingestor...');
     var ingestMarkdown = new Ingestor( ingestPath );
     ingestMarkdown.run();
-  });
+  }, console.error);
 };
 
 
@@ -41,7 +45,7 @@ ProcessRepo.prototype.clone = function () {
   return new Promise( function (resolve, reject) {
     self.clean().then( function () {
       git.clone(repoUrl, clonePath, resolve);
-    });
+    }).catch(reject);
   });
 };
 

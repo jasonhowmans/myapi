@@ -1,3 +1,4 @@
+'use strict';
 var frontmatter = require('front-matter');
 var moment = require('moment');
 var markdown = require('markdown').markdown;
