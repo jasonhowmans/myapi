@@ -1,5 +1,5 @@
 var http = require('http');
-var ProcessRepo = require('../process');
+var ProcessRepo = require('./process');
 
 var webhookListener = http.createServer(
 function (req, res) {

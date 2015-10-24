@@ -13,6 +13,7 @@ function ProcessRepo (url) {
   this.clonePath = `${__dirname}/_temp_repo`;
 }
 
+
 /**!
  * Start the process. Requires `this.repoUrl` & `this.clonePath` to be set
  */
