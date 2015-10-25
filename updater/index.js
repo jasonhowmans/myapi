@@ -12,8 +12,6 @@ var server = restify.createServer({
 });
 
 server.get('/', function (req, res) {
-  console.log(req);
-
   if (! _.has(req.headers, 'x-github-event')) {
     res.send(400);
     return;
