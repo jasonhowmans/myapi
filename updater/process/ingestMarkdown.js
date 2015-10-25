@@ -15,6 +15,9 @@ function IngestMd (ingestDir) {
   storage.initSync({
     dir: '../../persist'
   });
+
+  // Clear persisted data
+  storage.clearSync();
 }
 
 
