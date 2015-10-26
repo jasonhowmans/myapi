@@ -66,16 +66,14 @@ markdownParser.prototype.test = function (filename) {
  */
 markdownParser.prototype.filenameExtract = function (filename) {
   if (! _.isString(filename)) {
-    console.warn('filename must be a string');
-    return false;
+    return console.warn('filename must be a string');
   }
 
   var proto = markdownParser.prototype;
   var date, slug, title;
 
   if (! proto.test(filename)) {
-    console.warn(`Cant parse ${filename}`);
-    return false;
+    return console.warn(`Cant parse ${filename}`);
   }
 
   filename = filename.replace('.md', '');

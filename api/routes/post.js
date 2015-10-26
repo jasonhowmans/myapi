@@ -6,10 +6,12 @@ module.exports = function postHandler (req, res, next) {
     dir: '../../persist'
   });
 
-  var post = storage.getItem(`post:${req.params.slug}`);
+  var slug = req.params.slug;
+  var post = storage.getItem(`post:${slug}`);
 
   if (! post) {
     res.send(404, {});
+    console.warn(`[404] posts/${slug}`);
     return;
   }
 

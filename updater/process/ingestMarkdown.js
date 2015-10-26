@@ -73,7 +73,7 @@ IngestMd.prototype.crawlDir = function (inserterMethod) {
 
   fs.readdir(crawableDir, function (err, dir) {
     if (err) {
-      return console.error(err);
+      return console.error('The updater can\'t crawl the dir', err);
     }
 
     var files = _.filter(dir, markdownParser.test);
