@@ -8,6 +8,12 @@ var server = restify.createServer({
   version: '0.0.1'
 });
 
+server.use( function cors (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+  next();
+});
+
 var routes = [
   {
     path: '/posts',
