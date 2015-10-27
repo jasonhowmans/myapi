@@ -10,10 +10,10 @@ module.exports = function postHandler (req, res, next) {
   var post = storage.getItem(`post:${slug}`);
 
   if (! post) {
-    res.send(404, {});
+    res.send(404, { post: [] });
     console.warn(`[404] posts/${slug}`);
     return;
   }
 
-  res.send(post);
+  res.send( { post: post } );
 };

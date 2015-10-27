@@ -7,8 +7,8 @@ module.exports = function postsHandler (req, res, next) {
   });
   var posts = storage.values();
   if (! posts) {
-    res.send([]);
+    res.send( { posts: [] } );
     return;
   }
-  res.send(posts);
+  res.send( { posts: posts } );
 };
