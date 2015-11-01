@@ -7,7 +7,7 @@ var Ingestor = require('./ingestMarkdown');
 
 function ProcessRepo (url) {
   if (! _.isString(url)) {
-    console.warn('url arg must be a string');
+    throw new Error('url arg must be a string');
   }
 
   this.repoUrl = url;
@@ -23,14 +23,14 @@ ProcessRepo.prototype.run = function () {
 
   console.log('cleaning dir and cloning repo...');
   this.clone().then(
-  function (err, repo) {
+  function success (err, repo) {
     if (err) {
       return console.error(err);
     }
     console.log('starting ingestor...');
     var ingestMarkdown = new Ingestor( ingestPath );
     ingestMarkdown.run();
-  }, console.error);
+  }, console.error).catch(console.error);
 };
 
 
@@ -45,7 +45,7 @@ ProcessRepo.prototype.clone = function () {
   return new Promise( function (resolve, reject) {
     self.clean().then( function () {
       git.clone(repoUrl, clonePath, resolve);
-    }).catch(reject);
+    }, reject).catch(reject);
   });
 };
 
@@ -58,7 +58,13 @@ ProcessRepo.prototype.clean = function () {
   const clonePath = this.clonePath;
 
   return new Promise( function (resolve, reject) {
-    rimraf(clonePath, resolve);
+    rimraf(clonePath, function (err) {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve();
+    });
   });
 };
 

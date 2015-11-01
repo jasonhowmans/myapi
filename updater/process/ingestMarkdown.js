@@ -4,6 +4,8 @@ var path = require('path');
 var fs = require('fs');
 var markdownParser = require('./util/mdParser');
 var storage = require('node-persist');
+var moment = require('moment');
+var postModel = require('./postModel.json');
 
 function IngestMd (ingestDir) {
   if (! _.isString(ingestDir)) {
@@ -25,7 +27,7 @@ function IngestMd (ingestDir) {
  * After the Ingestor has been configured, use `run` to set things going
  */
 IngestMd.prototype.run = function () {
-  this.crawlDir( this.persistInserter );
+  this.crawlPostsDir( this.persistInserter );
 };
 
 
@@ -51,23 +53,40 @@ IngestMd.prototype.parseFile = function (filename) {
 
 
 /**!
+ * The model object is stored as a json file. Here we want to merge the empty
+ * model object and the data object together and augment the output.
+ * @param {Object} data - The data object parsed from the file
+ * @returns {Object} postObject
+ */
+IngestMd.prototype.augment = function (data) {
+  if (! _.isObject(postModel)) {
+    throw new Error('Can\t find posts model');
+  }
+  var postObject = _.extend(postModel, data);
+  postObject.written_on = moment(data.meta.date).fromNow();
+  return postObject;
+};
+
+
+/**!
  * Inserting the data into datastore should only be done with the insterter method
  * @param {String} key - The key that the data should be stored under
- * @param {*} data - The data to be inserted into redis. Can be anything UTF-8 friendly
+ * @param {*} data - The data to be inserted into storage. Can be anything UTF-8 friendly
  */
 IngestMd.prototype.persistInserter = function (key, data) {
   if (! _.isObject(data)) {
     console.warn('`data` argument should be Object');
     return;
   }
-  storage.setItem(key, data);
+  var value = this.augment(data);
+  storage.setItem(key, value);
 };
 
 
 /**!
  * For crawling the posts directory and calling a
  */
-IngestMd.prototype.crawlDir = function (inserterMethod) {
+IngestMd.prototype.crawlPostsDir = function (inserterMethod) {
   var self = this;
   const crawableDir = this.ingestDir;
 
@@ -80,10 +99,10 @@ IngestMd.prototype.crawlDir = function (inserterMethod) {
 
     files.forEach(function (filename) {
       self.parseFile( filename ).then(
-      function (fileJson) {
+      function runInserter (fileJson) {
         if (_.isFunction(inserterMethod)) {
           let slug = fileJson.meta.slug;
-          inserterMethod(`post:${slug}`, fileJson);
+          inserterMethod.call(self, `post:${slug}`, fileJson);
         }
       }, console.error);
     });
