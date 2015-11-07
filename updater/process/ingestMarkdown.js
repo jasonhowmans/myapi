@@ -62,8 +62,14 @@ IngestMd.prototype.augment = function (data) {
   if (! _.isObject(postModel)) {
     throw new Error('Can\t find posts model');
   }
-  var postObject = _.extend(postModel, data);
+  var postObject = {};
+
+  // Add augmented values to the output object
   postObject.written_on = moment(data.meta.date).fromNow();
+
+  // Inherit object structure from schema and data object
+  _.defaultsDeep(postObject, data, postModel);
+
   return postObject;
 };
 
