@@ -5,7 +5,7 @@ var fs = require('fs');
 var markdownParser = require('./util/mdParser');
 var storage = require('node-persist');
 var moment = require('moment');
-var postModel = require('./postModel.json');
+var postModel = require('./post-schema.json');
 
 function IngestMd (ingestDir) {
   if (! _.isString(ingestDir)) {
