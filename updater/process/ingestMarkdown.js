@@ -31,6 +31,21 @@ IngestMd.prototype.run = function () {
 };
 
 
+/**!
+ * For handing to a sort function and spitting out an aray of posts ordered reverse
+ * chronologically
+ * @param <a, b> - Sort args
+ * @returns Bool
+ */
+IngestMd.prototype.sortDatesDesc = function (a, b) {
+  a = markdownParser.filenameExtract(a);
+  b = markdownParser.filenameExtract(b);
+  if (! a || ! b) {
+    return false;
+  }
+  return b.date - a.date;
+};
+
 
 /**!
  * Parser. It opens and parses the specified file
@@ -102,6 +117,7 @@ IngestMd.prototype.crawlPostsDir = function (inserterMethod) {
     }
 
     var files = _.filter(dir, markdownParser.test);
+    files = files.sort( self.sortDatesDesc );
 
     files.forEach(function (filename) {
       self.parseFile( filename ).then(

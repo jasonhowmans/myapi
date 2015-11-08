@@ -22,9 +22,9 @@ function markdownParser (filename, filebody) {
 
 
 // This is the pattern that the parser uses to validate and parse a filename
-// ✔︎ "how-to-debug-javascript-2015-10-12"
+// ✔︎ "how-to-debug-javascript-2015-10-12.md"
 // ✘ "a_random-post-filename"
-markdownParser.prototype.filenameRegex = /(.*)-(\d{4}-\d{1,2}-\d{1,2})$/;
+markdownParser.prototype.filenameRegex = /(.*)-(\d{4}-\d{1,2}-\d{1,2})(.*)?/g;
 
 
 /**!
@@ -73,11 +73,11 @@ markdownParser.prototype.filenameExtract = function (filename) {
   var date, slug, title;
 
   if (! proto.test(filename)) {
-    return console.warn(`Cant parse ${filename}`);
+    console.warn(`Cant parse ${filename}`);
+    return null;
   }
 
-  filename = filename.replace('.md', '');
-  var parsed = filename.match( proto.filenameRegex );
+  var parsed = proto.filenameRegex.exec( filename );
 
   // Convert title into more friendly string
   slug = parsed[1];
@@ -95,6 +95,7 @@ markdownParser.prototype.filenameExtract = function (filename) {
 };
 
 module.exports = {
+  filenameExtract: markdownParser.prototype.filenameExtract,
   test: markdownParser.prototype.test,
   parse: markdownParser
 };
