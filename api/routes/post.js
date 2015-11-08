@@ -1,5 +1,6 @@
 'use strict';
 var storage = require('node-persist');
+var augmentors = require('../augmentors');
 
 module.exports = function postHandler (req, res, next) {
   storage.initSync({
@@ -14,6 +15,9 @@ module.exports = function postHandler (req, res, next) {
     console.warn(`[404] posts/${slug}`);
     return;
   }
+
+  post = augmentors.writtenOn(post);
+  post = augmentors.romanNumerals(post);
 
   res.send( { post: post } );
 };

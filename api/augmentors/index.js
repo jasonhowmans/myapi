@@ -1,3 +1,4 @@
 module.exports = Object.freeze({
-   writtenOn: require('./writtenOn')
+   writtenOn: require('./writtenOn'),
+   romanNumerals: require('./romanNumerals')
 });

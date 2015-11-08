@@ -18,6 +18,7 @@ module.exports = function postsHandler (req, res, next) {
   });
 
   posts = posts.map( augmentors.writtenOn );
+  posts = posts.map( augmentors.romanNumerals );
 
   res.send( { posts: posts } );
 };
