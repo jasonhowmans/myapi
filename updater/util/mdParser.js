@@ -1,6 +1,5 @@
 'use strict';
 var frontmatter = require('front-matter');
-var moment = require('moment');
 var markdown = require('markdown').markdown;
 var titleCase = require('to-title-case');
 var _ = require('lodash');
@@ -94,8 +93,8 @@ markdownParser.prototype.filenameExtract = function (filename) {
   };
 };
 
-module.exports = {
+module.exports = Object.freeze({
   filenameExtract: markdownParser.prototype.filenameExtract,
   test: markdownParser.prototype.test,
   parse: markdownParser
-};
+});

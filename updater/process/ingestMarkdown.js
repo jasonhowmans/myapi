@@ -2,7 +2,7 @@
 var _ = require('lodash');
 var path = require('path');
 var fs = require('fs');
-var markdownParser = require('./util/mdParser');
+var markdownParser = require('../util/mdParser');
 var storage = require('node-persist');
 var moment = require('moment');
 var postModel = require('./post-schema.json');
@@ -43,7 +43,7 @@ IngestMd.prototype.sortDatesDesc = function (a, b) {
   if (! a || ! b) {
     return false;
   }
-  return b.date - a.date;
+  return moment(b.date).isBefore(a.date);
 };
 
 
@@ -73,6 +73,7 @@ IngestMd.prototype.parseFile = function (filename) {
  * @param {Object} data - The data object parsed from the file
  * @returns {Object} postObject
  */
+var augmentIndex = 1;
 IngestMd.prototype.augment = function (data) {
   if (! _.isObject(postModel)) {
     throw new Error('Can\t find posts model');
@@ -80,7 +81,8 @@ IngestMd.prototype.augment = function (data) {
   var postObject = {};
 
   // Add augmented values to the output object
-  postObject.written_on = moment(data.meta.date).fromNow();
+  // postObject.written_on = moment(data.meta.date).fromNow(); // Killed cause it was stupid
+  postObject.index = augmentIndex ++;
 
   // Inherit object structure from schema and data object
   _.defaultsDeep(postObject, data, postModel);
@@ -99,8 +101,7 @@ IngestMd.prototype.persistInserter = function (key, data) {
     console.warn('`data` argument should be Object');
     return;
   }
-  var value = this.augment(data);
-  storage.setItem(key, value);
+  storage.setItem(key, data);
 };
 
 
@@ -120,7 +121,9 @@ IngestMd.prototype.crawlPostsDir = function (inserterMethod) {
     files = files.sort( self.sortDatesDesc );
 
     files.forEach(function (filename) {
-      self.parseFile( filename ).then(
+      self.parseFile( filename )
+          .then( self.augment, console.warn )
+          .then(
       function runInserter (fileJson) {
         if (_.isFunction(inserterMethod)) {
           let slug = fileJson.meta.slug;
