@@ -17,8 +17,9 @@ module.exports = function postsHandler (req, res, next) {
     return b.index > a.index;
   });
 
-  posts = posts.map( augmentors.writtenOn );
-  posts = posts.map( augmentors.romanNumerals );
+  posts = posts.map( function augment (post) {
+    return augmentors.run( post, 'writtenOn', 'romanNumerals', 'neighbours' );
+  });
 
   res.send( { posts: posts } );
 };

@@ -16,8 +16,7 @@ module.exports = function postHandler (req, res, next) {
     return;
   }
 
-  post = augmentors.writtenOn(post);
-  post = augmentors.romanNumerals(post);
+  post = augmentors.run( post, 'writtenOn', 'romanNumerals', 'neighbours' );
 
   res.send( { post: post } );
 };

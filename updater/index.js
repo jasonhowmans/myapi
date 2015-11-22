@@ -8,7 +8,7 @@ const listenPort = 8010;
 
 var server = restify.createServer({
   name: 'nosaj-updater',
-  version: '0.0.1'
+  version: '0.0.2'
 });
 
 server.post('/', function (req, res) {
@@ -17,8 +17,7 @@ server.post('/', function (req, res) {
     return;
   }
 
-  // Clone the repo then run the ingestor to read posts from github into
-  // persisted JSON
+  // Clone the repo then run the ingestor to harvest the content
   var process = new ProcessRepo('https://github.com/jasonhowmans/writing.git');
   process.run();
 
