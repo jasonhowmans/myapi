@@ -1,4 +1,5 @@
 'use strict';
+var _ = require('lodash');
 var storage = require('node-persist');
 var augmentors = require('../augmentors');
 
@@ -8,7 +9,10 @@ module.exports = function postHandler (req, res, next) {
   });
 
   var slug = req.params.slug;
-  var post = storage.getItem(`post:${slug}`);
+  var posts = storage.values();
+  var post = _.find(posts, function (p) {
+    return p.meta.slug === slug;
+  });
 
   if (! post) {
     res.send(404, { post: {} });
@@ -16,7 +20,8 @@ module.exports = function postHandler (req, res, next) {
     return;
   }
 
-  post = augmentors.run( post, 'writtenOn', 'romanNumerals', 'neighbours' );
+  var index = post.index;
+  post = augmentors.run(posts, index, 'writtenOn', 'romanNumerals', 'neighbours');
 
   res.send( { post: post } );
 };

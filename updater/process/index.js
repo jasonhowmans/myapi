@@ -56,7 +56,6 @@ ProcessRepo.prototype.clone = function () {
  */
 ProcessRepo.prototype.clean = function () {
   const clonePath = this.clonePath;
-
   return new Promise( function (resolve, reject) {
     rimraf(clonePath, function (err) {
       if (err) {

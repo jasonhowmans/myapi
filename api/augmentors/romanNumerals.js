@@ -1,3 +1,4 @@
+'use strict';
 /**!
  * Stolen from <http://stackoverflow.com/questions/9083037/convert-a-number-into-a-roman-numeral-in-javascript>
  */
@@ -17,7 +18,8 @@ function romanise (num) {
   return new Array( + digits.join('') + 1).join('M') + roman;
 }
 
-module.exports = function romanNumerals (postJson) {
-  postJson.numeral = romanise(postJson.index);
-  return postJson;
+module.exports = function romanNumerals (postJson, index) {
+  var post = postJson[index];
+  post.numeral = romanise(post.index+1);
+  return post;
 };

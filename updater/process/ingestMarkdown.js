@@ -73,7 +73,7 @@ IngestMd.prototype.parseFile = function (filename) {
  * @param {Object} data - The data object parsed from the file
  * @returns {Object} postObject
  */
-var augmentIndex = 1;
+var augmentIndex = 0;
 IngestMd.prototype.augment = function (data) {
   if (! _.isObject(postModel)) {
     throw new Error('Can\t find posts model');
