@@ -4,7 +4,8 @@ var augmentors = require('../augmentors');
 
 module.exports = function postsHandler (req, res, next) {
   storage.initSync({
-    dir: '../../persist'
+    dir: '../../persist',
+    ttl: false
   });
   var posts = storage.values();
   if (! posts) {

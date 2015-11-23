@@ -101,7 +101,7 @@ IngestMd.prototype.persistInserter = function (key, data) {
     console.warn('`data` argument should be Object');
     return;
   }
-  storage.setItem(key, data);
+  storage.setItemSync(key, data);
 };
 
 

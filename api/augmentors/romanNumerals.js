@@ -1,4 +1,6 @@
 'use strict';
+var augmentUtil = require('../util/augment');
+
 /**!
  * Stolen from <http://stackoverflow.com/questions/9083037/convert-a-number-into-a-roman-numeral-in-javascript>
  */
@@ -19,7 +21,7 @@ function romanise (num) {
 }
 
 module.exports = function romanNumerals (postJson, index) {
-  var post = postJson[index];
+  var post = augmentUtil.findByIndex(postJson, index);
   post.numeral = romanise(post.index+1);
   return post;
 };
