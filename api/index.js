@@ -22,6 +22,10 @@ var routes = [
   {
     path: '/posts/:slug',
     handler: require('./routes/post')
+  },
+  {
+    path: '/latest',
+    handler: require('./routes/latest')
   }
 ];
 
