@@ -1,5 +1,5 @@
 'use strict';
-var augmentUtil = require('../util/augment');
+var augmentUtil = require('./util/augment');
 
 /**!
  * Stolen from <http://stackoverflow.com/questions/9083037/convert-a-number-into-a-roman-numeral-in-javascript>

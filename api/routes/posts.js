@@ -1,6 +1,6 @@
 'use strict';
 var storage = require('node-persist');
-var augmentors = require('../augmentors');
+var augmenters = require('../../augmenters');
 
 module.exports = function postsHandler (req, res, next) {
   storage.initSync({
@@ -13,7 +13,7 @@ module.exports = function postsHandler (req, res, next) {
     return;
   }
 
-  posts = augmentors.map(posts, 'writtenOn', 'romanNumerals', 'neighbours');
+  posts = augmenters.map(posts, 'writtenOn', 'romanNumerals', 'neighbours');
 
   // Order posts by their assigned index
   posts = posts.sort( function (a, b) {

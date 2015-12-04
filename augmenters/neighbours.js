@@ -1,5 +1,5 @@
 'use strict';
-var augmentUtil = require('../util/augment');
+var augmentUtil = require('./util/augment');
 
 module.exports = function neighbours (postJson, index) {
   var post = augmentUtil.findByIndex(postJson, index);

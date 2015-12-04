@@ -1,6 +1,6 @@
 'use strict';
 var moment = require('moment');
-var augmentUtil = require('../util/augment');
+var augmentUtil = require('./util/augment');
 
 /**!
  * Add a written_on value to the post output, for a readable time

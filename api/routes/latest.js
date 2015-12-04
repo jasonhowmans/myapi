@@ -1,7 +1,7 @@
 'use strict';
 var _ = require('lodash');
 var storage = require('node-persist');
-var augmentors = require('../augmentors');
+var augmenters = require('../../augmenters');
 
 module.exports = function latestHandler (req, res, next) {
   storage.initSync({
@@ -23,7 +23,7 @@ module.exports = function latestHandler (req, res, next) {
     return;
   }
 
-  post = augmentors.run(posts, post.index, 'writtenOn', 'romanNumerals', 'neighbours');
+  post = augmenters.run(posts, post.index, 'writtenOn', 'romanNumerals', 'neighbours');
 
   res.send( { post: post } );
 };
