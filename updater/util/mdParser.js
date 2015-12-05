@@ -1,6 +1,6 @@
 'use strict';
 var frontmatter = require('front-matter');
-var markdown = require('markdown').markdown;
+var marked = require('marked');
 var titleCase = require('to-title-case');
 var _ = require('lodash');
 
@@ -34,7 +34,7 @@ markdownParser.prototype.filenameRegex = /(.*)-(\d{4}-\d{1,2}-\d{1,2})(.*)?/g;
  */
 markdownParser.prototype.parseBody = function (filebody) {
   var parsed = frontmatter(filebody);
-  var bodyHtml = markdown.toHTML(parsed.body);
+  var bodyHtml = marked(parsed.body);
   return _.assign(parsed.attributes, {
     body: bodyHtml
   });
