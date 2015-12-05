@@ -19,6 +19,7 @@ function IngestMd (ingestDir) {
   });
 
   // Clear persisted data
+  this.augmentIndex = 0;
   storage.clearSync();
 }
 
@@ -73,7 +74,6 @@ IngestMd.prototype.parseFile = function (filename) {
  * @param {Object} data - The data object parsed from the file
  * @returns {Object} postObject
  */
-var augmentIndex = 0;
 IngestMd.prototype.augment = function (data) {
   if (! _.isObject(postModel)) {
     throw new Error('Can\t find posts model');
@@ -82,7 +82,7 @@ IngestMd.prototype.augment = function (data) {
 
   // Add augmented values to the output object
   // postObject.written_on = moment(data.meta.date).fromNow(); // Killed cause it was stupid
-  postObject.index = augmentIndex ++;
+  postObject.index = this.augmentIndex ++;
 
   // Inherit object structure from schema and data object
   _.defaultsDeep(postObject, data, postModel);
@@ -122,7 +122,7 @@ IngestMd.prototype.crawlPostsDir = function (inserterMethod) {
 
     files.forEach(function (filename) {
       self.parseFile( filename )
-          .then( self.augment, console.warn )
+          .then( self.augment.bind(self), console.warn )
           .then(
       function runInserter (fileJson) {
         if (_.isFunction(inserterMethod)) {

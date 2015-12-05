@@ -66,7 +66,6 @@ runAugmenters.prototype.safeLoad = function (augmenter) {
   try {
     return require(`./${augmenter}`);
   } catch (e) {
-    console.warn(`./augmenters/${augmenter}.js doesn't exist`);
     console.log(e);
   }
 };
