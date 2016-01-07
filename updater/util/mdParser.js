@@ -16,6 +16,13 @@ function markdownParser (filename, filebody) {
   var filenameJson =  proto.filenameExtract(filename);
   var bodyJson = proto.parseBody(filebody);
   bodyJson.meta = filenameJson;
+
+  // Set options to the marked parser
+  marked.setOptions({
+    gfm: true,
+    smartypants: true
+  });
+
   return bodyJson;
 }
 
