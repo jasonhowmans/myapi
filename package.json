@@ -17,6 +17,7 @@
     "node-persist": "0.0.7",
     "restify": "^4.0.3",
     "rimraf": "^2.4.3",
+    "rss": "^1.2.1",
     "to-title-case": "^0.1.5"
   },
   "devDependencies": {

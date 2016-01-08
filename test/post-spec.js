@@ -1,7 +1,7 @@
 var frisby = require('frisby');
 
 frisby.create('Get post from /posts/bacon-ipsum')
-      .get('http://127.0.0.1:8000/posts/bacon-ipsum')
+      .get('http://127.0.0.1:8000/latest')
       .expectStatus(200)
       .expectHeaderContains('content-type', 'application/json')
       .expectJSONTypes('post', {

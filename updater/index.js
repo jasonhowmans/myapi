@@ -26,5 +26,5 @@ server.post('/', function (req, res) {
 
 // We want to listen for update events, which trigger the ingestor to update
 server.listen( listenPort, 'localhost', function connected () {
-  console.log(`Updater is listening at http://localhost:${listenPort}`);
+  console.log('%s listening at %s', server.name, server.url);
 });

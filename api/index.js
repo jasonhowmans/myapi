@@ -26,6 +26,10 @@ var routes = [
   {
     path: '/latest',
     handler: require('./routes/latest')
+  },
+  {
+    path: '/rss',
+    handler: require('./routes/rss')
   }
 ];
 
@@ -36,5 +40,5 @@ routes.forEach( function (route) {
 });
 
 server.listen(listenPort, 'localhost', function connected () {
-  console.log(`API is listening at http://localhost:${listenPort}`);
+  console.log('%s listening at %s', server.name, server.url);
 });
