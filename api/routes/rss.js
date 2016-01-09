@@ -32,9 +32,13 @@ module.exports = function feedHandler (req, res, next) {
       title: post.title,
       description: post.body,
       link: `http://nosaj.io/#/${post.meta.slug}`,
-      author: 'Jason Howmans',
+      author: 'jason@nosaj.io',
       date: new Date(post.meta.date)
     };
+
+    if (post.image) {
+      feedItem.image = image;
+    }
 
     feed.item( feedItem );
   });
