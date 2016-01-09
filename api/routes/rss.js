@@ -27,6 +27,11 @@ module.exports = function feedHandler (req, res, next) {
     return res.end();
   }
 
+  // Sort posts newest first
+  posts = posts.sort( function (a, b) {
+    return b.index > a.index;
+  });
+
   posts.forEach( function (post) {
     var feedItem = {
       title: post.title,
