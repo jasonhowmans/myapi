@@ -8,6 +8,7 @@ frisby.create('Get post from /posts/bacon-ipsum')
         index: Number,
         image: function (val) { expect(val).toBeTypeOrNull(String) },
         title: String,
+        synopsis: function (val) { expect(val).toBeTypeOrNull(String) },
         body: String,
         written_on: String,
         numeral: String,

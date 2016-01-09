@@ -1,11 +1,12 @@
 'use strict';
+var config = require('./api-config.json');
 var restify = require('restify');
 
 const listenPort = 8000;
 
 var server = restify.createServer({
-  name: 'nosaj-api',
-  version: '0.0.1'
+  name: config.appName,
+  version: config.version
 });
 
 server.use( function cors (req, res, next) {
@@ -36,7 +37,7 @@ var routes = [
 // Configure restify routes with routes array
 routes.forEach( function (route) {
   server.get.call(server, route.path, route.handler);
-  console.log(`Configured route for ${route.path}`);
+  console.log('Configured route for %s', route.path);
 });
 
 server.listen(listenPort, 'localhost', function connected () {
