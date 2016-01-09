@@ -8,7 +8,7 @@ const listenPort = 8010;
 
 var server = restify.createServer({
   name: 'nosaj-updater',
-  version: '0.0.2'
+  version: '0.1.0'
 });
 
 server.post('/', function (req, res) {
