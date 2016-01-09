@@ -23,18 +23,20 @@ module.exports = function feedHandler (req, res, next) {
 
   if (! posts) {
     console.error('Posts returned empty for rss endpoint');
+    res.writeHead(204);
+    return res.end();
   }
 
   posts.forEach( function (post) {
     var feedItem = {
       title: post.title,
-      description: post.synopsis,
+      description: post.body,
       link: `http://nosaj.io/#/${post.meta.slug}`,
       author: 'Jason Howmans',
       date: new Date(post.meta.date)
     };
 
-    feed.item( feedItem )
+    feed.item( feedItem );
   });
 
 
